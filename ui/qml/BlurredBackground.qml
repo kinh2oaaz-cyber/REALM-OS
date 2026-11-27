@@ -29,23 +29,23 @@ Item {
         anchors.fill: parent
         layer.enabled: true
 
-        // subtle blurred red + gold light sources (desaturated)
+        // subtle blurred red + gold light sources
         Rectangle {
             x: parent.width * 0.58; y: parent.height * 0.06
             width: parent.width * 0.5; height: parent.height * 0.5
-            color: "#A82435"; opacity: 0.10
+            color: "#C51F35"; opacity: 0.18
             radius: width / 2
         }
         Rectangle {
             x: parent.width * 0.5; y: parent.height * 0.55
             width: parent.width * 0.55; height: parent.height * 0.5
-            color: "#C9A863"; opacity: 0.08
+            color: "#D6AD55"; opacity: 0.14
             radius: width / 2
         }
         Rectangle {
             x: 0; y: parent.height * 0.45
             width: parent.width * 0.4; height: parent.height * 0.6
-            color: "#7A1A2A"; opacity: 0.12
+            color: "#781324"; opacity: 0.16
             radius: width / 2
         }
 

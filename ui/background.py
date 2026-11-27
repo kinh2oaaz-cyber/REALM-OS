@@ -27,9 +27,9 @@ from core.config import assets_dir, project_root
 # REALM palette
 _BG = "#0B090B"
 _SECONDARY = "#141014"
-_CRIMSON = "#A82435"       # deeper, desaturated crimson
-_DEEP_CRIMSON = "#7A1A2A"
-_GOLD = "#C9A863"          # muted royal gold / antique bronze
+_CRIMSON = "#C51F35"
+_DEEP_CRIMSON = "#781324"
+_GOLD = "#D6AD55"
 _LIGHT_GOLD = "#F1D58A"
 
 _QML_DIR = Path(__file__).resolve().parent / "qml"

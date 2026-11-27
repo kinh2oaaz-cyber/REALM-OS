@@ -10,13 +10,13 @@ assets.** Preserves all working logic + SQLite + 21 apps. No rewrite.
 | Background | `#0B090B` |
 | Secondary | `#141014` |
 | Surface | `#1C1519` |
-| Primary red | `#A82435` |  # deeper, desaturated crimson
-| Deep crimson | `#7A1A2A` |
-| Royal gold | `#C9A863` |  # muted antique bronze gold
+| Primary red | `#C51F35` |
+| Deep crimson | `#781324` |
+| Royal gold | `#D6AD55` |
 | Light gold | `#F1D58A` |
 | Text | `#F5F0E9` |
 | Secondary text | `#A69A9A` |
-| Borders | `rgba(201, 168, 99, 0.12)` |
+| Borders | `rgba(214,173,85,0.18)` |
 
 Gold = premium highlight (not overused); red = identity (not bright bg).
 

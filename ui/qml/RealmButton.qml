@@ -10,8 +10,8 @@ Rectangle {
     height: 38
     radius: 10
     color: primary
-        ? (mouse.containsMouse ? "#F1D58A" : "#C9A863")
-        : (mouse.containsMouse ? Qt.rgba(168/255,31/255,53/255,0.18) : Qt.rgba(28/255,21/255,25/255,0.72))
+        ? (mouse.containsMouse ? "#F1D58A" : "#D6AD55")
+        : (mouse.containsMouse ? Qt.rgba(197/255,31/255,53/255,0.18) : Qt.rgba(28/255,21/255,25/255,0.72))
     border.color: primary ? "transparent" : Qt.rgba(214/255,173/255,85/255,0.22)
     border.width: primary ? 0 : 1
 
