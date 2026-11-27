@@ -16,7 +16,7 @@ class TestSettings(DatabaseTestCase):
 
     def test_defaults(self) -> None:
         self.assertEqual(self.settings.get("appearance.theme"), "redgold")
-        self.assertEqual(self.settings.get("appearance.accent"), "#C8AA6E")
+        self.assertEqual(self.settings.get("appearance.accent"), "#D6AD55")
         self.assertFalse(self.settings.get_bool("privacy.telemetry"))
 
     def test_set_get_roundtrip_types(self) -> None:

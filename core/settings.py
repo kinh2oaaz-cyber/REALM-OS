@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 # Defaults applied when a key has never been set.
 DEFAULTS: dict[str, Any] = {
     "appearance.theme": "redgold",  # redgold | system | light | dark
-    "appearance.accent": "#C8AA6E",
+    "appearance.accent": "#D6AD55",
     "appearance.font_family": "Segoe UI",
     "appearance.font_size": 13,
     "appearance.reduce_motion": False,

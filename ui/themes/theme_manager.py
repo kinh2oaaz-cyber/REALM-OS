@@ -213,9 +213,8 @@ class ThemeManager(QObject):
         self.set_mode(new)
         return new
 
-
 def _redgold_extra_qss() -> str:
-    """Frosted-glass red + gold overrides; appended in redgold mode."""
+    """Frosted-glass Crimson x Royal Gold overrides; appended in redgold mode."""
     try:
         from ui.background import ensure_redgold_background
 
@@ -229,16 +228,18 @@ def _redgold_extra_qss() -> str:
         else ""
     )
     return (
-        "\n/* ---- redgold frosted glass ---- */\n"
+        "\n/* ---- REALM crimson x gold frosted glass ---- */\n"
         "QWidget { background: transparent; }\n"
         "QMainWindow { background: transparent; }\n"
         + bg_rule
-        + "\nQFrame#Card { background: rgba(34, 16, 22, 0.74); border: 1px solid rgba(212, 175, 55, 0.32); border-radius: 14px; }\n"
-        "QWidget#Sidebar { background: rgba(20, 8, 12, 0.82); border-right: 1px solid rgba(212, 175, 55, 0.25); }\n"
-        "QWidget#TopBar { background: rgba(28, 12, 18, 0.78); border-bottom: 1px solid rgba(212, 175, 55, 0.25); }\n"
-        "QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QDateEdit, QDateTimeEdit { background: rgba(24, 10, 14, 0.72); border: 1px solid rgba(212, 175, 55, 0.35); }\n"
-        "QPushButton { background: rgba(40, 18, 24, 0.72); border: 1px solid rgba(212, 175, 55, 0.35); }\n"
-        "QPushButton#PrimaryButton { background: #C8AA6E; color: #0F1114; border: none; }\n"
+        + "\nQFrame#Card { background: rgba(28, 21, 25, 0.72); border: 1px solid rgba(214, 173, 85, 0.18); border-radius: 14px; }\n"
+        "QWidget#Sidebar { background: rgba(20, 16, 20, 0.85); border-right: 1px solid rgba(214, 173, 85, 0.18); }\n"
+        "QWidget#TopBar { background: rgba(20, 16, 20, 0.80); border-bottom: 1px solid rgba(214, 173, 85, 0.18); }\n"
+        "QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QDateEdit, QDateTimeEdit { background: rgba(20, 16, 20, 0.72); border: 1px solid rgba(214, 173, 85, 0.25); }\n"
+        "QPushButton { background: rgba(28, 21, 25, 0.72); border: 1px solid rgba(214, 173, 85, 0.22); }\n"
+        "QPushButton#PrimaryButton { background: #D6AD55; color: #0B090B; border: none; }\n"
+        "QPushButton#PrimaryButton:hover { background: #F1D58A; color: #0B090B; border: none; }\n"
+        "QPushButton#NavButton:checked { background: rgba(197, 31, 53, 0.18); color: #F1D58A; border-left: 3px solid #D6AD55; font-weight: 600; }\n"
         "QListWidget { background: transparent; }\n"
         "QScrollArea { background: transparent; }\n"
     )

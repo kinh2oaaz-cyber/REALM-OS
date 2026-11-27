@@ -102,11 +102,13 @@ class HomePage(RealmPage):
         self._events_card = Card("Upcoming events")
         self._tasks_card = Card("Pending tasks")
         self._notes_card = Card("Recently accessed notes")
+        self._games_card = Card("Recently played games")
         info_row = QHBoxLayout()
         info_row.setSpacing(16)
         info_row.addWidget(self._events_card, 1)
         info_row.addWidget(self._tasks_card, 1)
         info_row.addWidget(self._notes_card, 1)
+        info_row.addWidget(self._games_card, 1)
         self._content_layout.addLayout(info_row)
 
         self._content_layout.addStretch(1)
@@ -129,6 +131,7 @@ class HomePage(RealmPage):
         self._fill_events()
         self._fill_tasks()
         self._fill_notes()
+        self._fill_games()
 
     def _fill_quick(self) -> None:
         while self._quick.count():
@@ -204,9 +207,23 @@ class HomePage(RealmPage):
         )
         if not rows:
             card.add_widget(muted("No notes yet."))
-            return
-        for r in rows:
-            card.add_widget(self._row(f" {r['title'] or 'Untitled'}", r["last_accessed_at"]))
+        else:
+            for r in rows:
+                card.add_widget(self._row(r["title"] or "Untitled", r["last_accessed_at"]))
+
+    def _fill_games(self) -> None:
+        card = self._games_card
+        self._clear_card_body(card)
+        rows = self.context.db.query(
+            "SELECT name, last_played_at, total_playtime_seconds FROM games "
+            "WHERE last_played_at IS NOT NULL ORDER BY last_played_at DESC LIMIT 5"
+        )
+        if not rows:
+            card.add_widget(muted("No recently played games."))
+        else:
+            for r in rows:
+                mins = (r["total_playtime_seconds"] or 0) // 60
+                card.add_widget(self._row(r["name"], f"{r['last_played_at']}  {mins}m"))
 
     # -- helpers --------------------------------------------------------
     def _row(self, title: str, subtitle: str) -> QWidget:

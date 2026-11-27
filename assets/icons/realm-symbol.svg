@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F1D58A"/><stop offset="1" stop-color="#D6AD55"/>
+    </linearGradient>
+    <linearGradient id="crimson" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C51F35"/><stop offset="1" stop-color="#781324"/>
+    </linearGradient>
+  </defs>
+  <!-- original abstract geometric REALM mark: layered hexagon + inner notch; no letters; not any existing logo -->
+  <path d="M32 4 L54 17 L54 47 L32 60 L10 47 L10 17 Z" fill="url(#crimson)"/>
+  <path d="M32 4 L54 17 L32 30 L10 17 Z" fill="url(#gold)" opacity="0.95"/>
+  <path d="M32 30 L54 47 L32 60 L10 47 Z" fill="#0B090B" opacity="0.35"/>
+  <path d="M32 18 L44 25 L44 39 L32 46 L20 39 L20 25 Z" fill="#0B090B"/>
+  <path d="M32 18 L44 25 L32 32 L20 25 Z" fill="url(#gold)" opacity="0.85"/>
+</svg>

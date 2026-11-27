@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import os
 import sys
 
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QMessageBox
 
 from core.app_registry import AppRegistry
@@ -34,7 +36,14 @@ class RealmOSApplication:
         ensure_dirs()
         self.logger = setup_logging(_config.logs_dir())
 
+        # Performance-safe Qt Quick (integrated graphics); no extra deps.
+        os.environ.setdefault("QT_QUICK_BACKEND", "software")
+        os.environ.setdefault("QSG_RENDER_LOOP", "basic")
         self.app = QApplication.instance() or QApplication(argv)
+        try:
+            self.app.setAttribute(Qt.ApplicationAttribute.AA_ShareOpenGLContexts, True)
+        except Exception:  # noqa: BLE001
+            pass
         self.app.setApplicationName(APP_NAME)
         self.app.setApplicationVersion(APP_VERSION)
         self.app.setOrganizationName(ORG_NAME)

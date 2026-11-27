@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 # Default accent + curated presets (subtle, not neon).
-DEFAULT_ACCENT = "#C8AA6E"
+DEFAULT_ACCENT = "#D6AD55"
 ACCENT_PRESETS: list[tuple[str, str]] = [
     ("Blue", "#0071E3"),
     ("Indigo", "#5856D6"),
@@ -111,31 +111,34 @@ DARK_TOKENS = ThemeTokens(
 PALETTES: dict[str, ThemeTokens] = {"light": LIGHT_TOKENS, "dark": DARK_TOKENS}
 
 REDGOLD_TOKENS = ThemeTokens(
-    name="redgold",  # Riot-Client-style black + red + gold, frosted glass
-    bg="#0F1114",
-    surface="rgba(24, 26, 31, 0.72)",
-    surface_alt="rgba(18, 20, 24, 0.62)",
-    sidebar_bg="rgba(12, 14, 17, 0.86)",
-    text="#F0E6D2",
-    text_secondary="#A0977E",
-    text_tertiary="#7A735C",
-    border="rgba(200, 170, 110, 0.24)",
-    border_strong="rgba(200, 170, 110, 0.5)",
-    hover="rgba(200, 170, 110, 0.12)",
-    pressed="rgba(200, 170, 110, 0.22)",
-    accent="#C8AA6E",
-    accent_soft="rgba(200, 170, 110, 0.18)",
-    accent_text="#0F1114",
-    danger="#E84057",
+    name="redgold",  # REALM Crimson x Royal Gold, frosted glass (Riot-INSPIRED, original; not Riot assets)
+    bg="#0B090B",            # near-black
+    surface="#1C1519",       # translucent in QSS; solid fallback
+    surface_alt="#141014",   # secondary background
+    sidebar_bg="#141014",
+    text="#F5F0E9",          # main text
+    text_secondary="#A69A9A",# secondary text
+    text_tertiary="#7A6E6E",
+    border="rgba(214, 173, 85, 0.18)",
+    border_strong="rgba(214, 173, 85, 0.4)",
+    hover="rgba(197, 31, 53, 0.14)",
+    pressed="rgba(197, 31, 53, 0.24)",
+    accent="#D6AD55",        # royal gold
+    accent_soft="rgba(214, 173, 85, 0.16)",
+    accent_text="#0B090B",
+    danger="#C51F35",        # crimson red
     success="#3FB950",
-    warning="#E3B341",
+    warning="#F1D58A",
     shadow="rgba(0, 0, 0, 0.6)",
-    scrollbar="rgba(200, 170, 110, 0.45)",
-    scrollbar_hover="rgba(200, 170, 110, 0.7)",
+    scrollbar="rgba(214, 173, 85, 0.4)",
+    scrollbar_hover="rgba(214, 173, 85, 0.65)",
     radius_card=14,
     radius_control=10,
     font_family="Segoe UI",
     base_size=13,
 )
-
+# REALM Crimson accents
 PALETTES["redgold"] = REDGOLD_TOKENS
+# alias name
+PALETTES["crimson_gold"] = REDGOLD_TOKENS
+

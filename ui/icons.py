@@ -113,3 +113,29 @@ def realm_logo(size: int = 28) -> QIcon:
             pix = pix.scaled(size, size, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             return QIcon(pix)
     return icon(APP_LOGO, size=size)
+
+
+def realm_symbol_path():
+    """Path to original geometric REALM symbol SVG (crimson + gold; no letters; not Riot)."""
+    p = assets_dir() / "icons" / "realm-symbol.svg"
+    return p if p.exists() else None
+
+
+def realm_symbol(size: int = 28) -> QIcon:
+    """QIcon for the original REALM geometric symbol."""
+    path = realm_symbol_path()
+    if path is not None:
+        return _svg_icon_file(path, size)
+    return realm_logo(size=size)
+
+
+def _svg_icon_file(path, size: int) -> QIcon:
+    from PySide6.QtGui import QPixmap
+    from PySide6.QtSvg import QSvgRenderer
+    pix = QPixmap(size, size)
+    pix.fill(Qt.GlobalColor.transparent)
+    renderer = QSvgRenderer(str(path))
+    painter = QPainter(pix)
+    renderer.render(painter)
+    painter.end()
+    return QIcon(pix)
