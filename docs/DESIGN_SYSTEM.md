@@ -23,7 +23,7 @@ AI orbs, no clutter, no fake buttons.
 
 ```python
 theme.set_mode("system" | "light" | "dark")
-theme.set_accent("#FF3B30")     # validated hex; invalid -> default
+theme.set_accent("#C9A863")     # validated hex; invalid -> default
 theme.set_font_family("Segoe UI")
 theme.set_font_size(13)         # clamped 9..28
 theme.toggle_dark()
@@ -46,9 +46,9 @@ Primary buttons `#PrimaryButton`, danger `#DangerButton`, ghost
 
 ## Red & Gold blur (default)
 
-Default theme edgold (user can switch System/Light/Dark). Deep red→gold background (ui/background.py, pre-blurred ssets/background_redgold.png), frosted-glass translucent panels, **gold accent #D4AF37**, warm dark text. Qt QSS has no ackdrop-filter, so a pre-blurred image + QGraphicsBlurEffect + translucent surfaces are used. No neon, no sci-fi, readable contrast. See docs/MOTION.md, docs/ICONS.md.
+Default theme **redgold** (user can switch System/Light/Dark). Deep red→gold background (ui/background.py, pre-blurred `assets/background_redgold.png`), frosted-glass translucent panels, **muted gold accent #C9A863**, warm dark text. Qt QSS has no `backdrop-filter`, so a pre-blurred image + `QGraphicsBlurEffect` + translucent surfaces are used. No neon, no sci-fi, readable contrast. See docs/MOTION.md, docs/ICONS.md.
 
 
 ## Riot-Client-style polish
 
-Dark #0F1114, translucent panels, **Riot red #E84057** + **gold #C8AA6E** + #F0E6D2, rounded, shadows, smooth Qt motion, blurred background. **REALM OS logo** REALM OS LOGO.png. Honest note: matches Riot-Client *style*; not pixel-identical; **not** Framer Motion (Riot Client itself is CEF/React + Framer Motion; REALM OS is PySide6).
+Dark #0B090B, translucent panels, **desaturated crimson accent #A82435** + **muted gold #C9A863** + #F1D58A, rounded, shadows, smooth Qt motion, blurred background. **REALM OS logo** REALM OS LOGO.png. Honest note: matches Riot-Client *style*; not pixel-identical; **not** Framer Motion (Riot Client itself is CEF/React + Framer Motion; REALM OS is PySide6).

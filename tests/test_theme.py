@@ -20,7 +20,7 @@ class TestQss(unittest.TestCase):
 
     def test_accent_invalid_falls_back(self) -> None:
         qss = build_qss(LIGHT_TOKENS, accent="not-a-color")
-        self.assertIn("#D6AD55", qss)  # default gold
+        self.assertIn("#C9A863", qss)  # default gold
 
     def test_font_and_size(self) -> None:
         qss = build_qss(LIGHT_TOKENS, font_family="Georgia", base_size=17)
@@ -36,7 +36,7 @@ class TestQss(unittest.TestCase):
 
 class TestHelpers(unittest.TestCase):
     def test_is_hex_color(self) -> None:
-        self.assertTrue(_is_hex_color("#D6AD55"))
+        self.assertTrue(_is_hex_color("#C9A863"))
         self.assertTrue(_is_hex_color("#fff"))
         self.assertFalse(_is_hex_color("0071E3"))
         self.assertFalse(_is_hex_color("#xyzxyz"))
@@ -44,8 +44,8 @@ class TestHelpers(unittest.TestCase):
         self.assertFalse(_is_hex_color(""))
 
     def test_accent_soft(self) -> None:
-        self.assertTrue(_accent_soft("#D6AD55", "light").startswith("#"))
-        self.assertTrue(_accent_soft("#D6AD55", "dark").startswith("#"))
+        self.assertTrue(_accent_soft("#C9A863", "light").startswith("#"))
+        self.assertTrue(_accent_soft("#C9A863", "dark").startswith("#"))
         self.assertTrue(_accent_soft("garbage", "light").startswith("#"))
 
 

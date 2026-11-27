@@ -4,7 +4,7 @@ import QtQuick
 Item {
     id: root
     width: 32; height: 32
-    property color accent: "#D6AD55"
+    property color accent: "#C9A863"
 
     Rectangle {
         id: ring

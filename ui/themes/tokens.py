@@ -8,8 +8,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-# Default accent + curated presets (subtle, not neon).
-DEFAULT_ACCENT = "#D6AD55"
+# Default accent + curated presets (subtle, desaturated, not neon).
+DEFAULT_ACCENT = "#C9A863"
 ACCENT_PRESETS: list[tuple[str, str]] = [
     ("Blue", "#0071E3"),
     ("Indigo", "#5856D6"),
@@ -119,19 +119,19 @@ REDGOLD_TOKENS = ThemeTokens(
     text="#F5F0E9",          # main text
     text_secondary="#A69A9A",# secondary text
     text_tertiary="#7A6E6E",
-    border="rgba(214, 173, 85, 0.18)",
-    border_strong="rgba(214, 173, 85, 0.4)",
-    hover="rgba(197, 31, 53, 0.14)",
-    pressed="rgba(197, 31, 53, 0.24)",
-    accent="#D6AD55",        # royal gold
-    accent_soft="rgba(214, 173, 85, 0.16)",
+    border="rgba(201, 168, 99, 0.12)",
+    border_strong="rgba(201, 168, 99, 0.28)",
+    hover="rgba(168, 36, 53, 0.10)",
+    pressed="rgba(168, 36, 53, 0.20)",
+    accent="#C9A863",        # muted royal gold (antique bronze)
+    accent_soft="rgba(201, 168, 99, 0.10)",
     accent_text="#0B090B",
-    danger="#C51F35",        # crimson red
+    danger="#A82435",        # deeper, desaturated crimson red
     success="#3FB950",
     warning="#F1D58A",
-    shadow="rgba(0, 0, 0, 0.6)",
-    scrollbar="rgba(214, 173, 85, 0.4)",
-    scrollbar_hover="rgba(214, 173, 85, 0.65)",
+    shadow="rgba(0, 0, 0, 0.55)",
+    scrollbar="rgba(201, 168, 99, 0.35)",
+    scrollbar_hover="rgba(201, 168, 99, 0.55)",
     radius_card=14,
     radius_control=10,
     font_family="Segoe UI",
