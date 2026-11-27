@@ -1,0 +1,61 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+ENV/
+.eggs/
+*.egg-info/
+*.egg
+build/
+dist/
+wheels/
+pip-wheel-metadata/
+
+# ---- REALM OS runtime data (never commit; per-user) ----
+logs/
+*.log
+realmos.db
+realmos.db-wal
+realmos.db-shm
+*.backup.db
+*.pre-restore.db
+REALMOS_DATA_DIR/
+# per-user app data lives in %LOCALAPPDATA%\REALM OS, not the repo
+.env
+.env.local
+.env.*.local
+secrets/
+*.key
+*.pem
+
+# ---- Qt / generated ----
+*.qss.cache
+qmlcache/
+qtcache/
+
+# ---- generated screenshots / caches ----
+docs/_screenshot_redgold.png
+assets/background_redgold.png
+
+# ---- IDE ----
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- OS ----
+*.bak
+*~

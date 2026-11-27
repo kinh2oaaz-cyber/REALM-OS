@@ -1,0 +1,19 @@
+REALM OS
+Copyright (c) 2026 REALM
+
+All rights reserved.
+
+This source code and its assets (including the REALM OS logo) are
+proprietary. No permission is granted to use, copy, modify, merge,
+publish, distribute, sublicense, or sell copies of this software
+without explicit written permission from REALM.
+
+Bundled third-party components retain their own licenses, notably:
+- Tabler Icons (MIT) — see assets/icons/LICENSE-tabler.txt
+- PySide6 / Qt (LGPLv3 / GPLv3 / Commercial) — see PySide6 license
+- psutil (BSD-3-Clause)
+- cryptography (Apache-2.0 OR BSD-3-Clause)
+
+If you intend to publish REALM OS publicly on GitHub, replace this
+notice with your chosen license (e.g. MIT, Apache-2.0, GPL-3.0) and
+ensure third-party license obligations are satisfied.
