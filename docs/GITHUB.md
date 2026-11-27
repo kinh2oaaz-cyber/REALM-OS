@@ -21,7 +21,7 @@ git branch -M main
 git add .
 git status                      # verify no .db/.log/.env/__pycache__/dist
 git commit -m "REALM OS v1.0.0"
-git remote add origin https://github.com/<you>/realm-os.git
+git remote add origin https://github.com/kinh2oaaz-cyber/REALM-OS.git
 # authenticate with YOUR credential manager or `gh auth login`. Do NOT paste a token in chat.
 git push -u origin main
 ```
@@ -29,7 +29,7 @@ git push -u origin main
 ## With GitHub CLI (recommended; no pasted token)
 ```powershell
 gh auth login                   # interactive, stores token in OS keychain
-gh repo create realm-os --private --source=. --remote=origin --push
+gh repo create REALM-OS --source=. --remote=origin --push
 ```
 
 ## Update later
