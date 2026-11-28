@@ -1,25 +1,27 @@
-"""Design tokens for the Apple-inspired minimalist design system.
+"""REALM OS design tokens — "REALM Cinematic" design language.
 
-Clean spacious layouts, rounded corners, subtle shadows, neutral
-backgrounds, subtle accents. Light and dark palettes share structure.
+A dark, cinematic, premium desktop aesthetic: deep near-black backgrounds,
+graphite surfaces, blood-crimson primary accents and metallic gold premium
+highlights. Tokens are the single source of truth for every widget; QSS is
+generated from them at runtime (see ``theme_manager.build_qss``).
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-# Default accent + curated presets (subtle, not neon).
+# Default accent (gold = premium highlight / selected detail).
 DEFAULT_ACCENT = "#D6AD55"
 
 ACCENT_PRESETS: list[tuple[str, str]] = [
-    ("Blue", "#0071E3"),
-    ("Indigo", "#5856D6"),
-    ("Purple", "#AF52DE"),
-    ("Pink", "#FF2D55"),
-    ("Red", "#FF3B30"),
-    ("Orange", "#FF9500"),
-    ("Green", "#34C759"),
+    ("Gold", "#D6AD55"),
+    ("Crimson", "#C51F35"),
+    ("Rose", "#E0566E"),
+    ("Amber", "#E0A458"),
+    ("Emerald", "#3FB950"),
     ("Teal", "#30B0C7"),
+    ("Indigo", "#7C83E0"),
+    ("Purple", "#AF52DE"),
     ("Graphite", "#8E8E93"),
 ]
 
@@ -48,8 +50,8 @@ class ThemeTokens:
     scrollbar: str
     scrollbar_hover: str
     # geometry
-    radius_card: int = 12
-    radius_control: int = 8
+    radius_card: int = 14
+    radius_control: int = 9
     spacing: int = 12
     # typography
     font_family: str = "Segoe UI"
@@ -57,6 +59,17 @@ class ThemeTokens:
     title_size: int = 20
     heading_size: int = 16
     small_size: int = 11
+    # extended "REALM Cinematic" palette (appended; safe defaults)
+    surface_elevated: str = ""
+    surface_glass: str = ""
+    gold: str = ""
+    gold_soft: str = ""
+    crimson: str = ""
+    crimson_soft: str = ""
+    crimson_strong: str = ""
+    text_on_accent: str = ""
+    hairline: str = ""
+    glow_crimson: str = ""
 
 
 LIGHT_TOKENS = ThemeTokens(
@@ -111,34 +124,49 @@ DARK_TOKENS = ThemeTokens(
 
 PALETTES: dict[str, ThemeTokens] = {"light": LIGHT_TOKENS, "dark": DARK_TOKENS}
 
+# ---------------------------------------------------------------------------
+# REALM Cinematic — the flagship dark theme.
+# Discipline: charcoal/black dominate; crimson = primary action / active /
+# important; gold = premium highlight / selected detail only.
+# ---------------------------------------------------------------------------
 REDGOLD_TOKENS = ThemeTokens(
-    name="redgold",  # REALM Crimson x Royal Gold, frosted glass (Riot-INSPIRED, original; not Riot assets)
-    bg="#0B090B",            # near-black
-    surface="#1C1519",       # translucent in QSS; solid fallback
-    surface_alt="#141014",   # secondary background
-    sidebar_bg="#141014",
-    text="#F5F0E9",          # main text
-    text_secondary="#A69A9A",# secondary text
-    text_tertiary="#7A6E6E",
-    border="rgba(214, 173, 85, 0.18)",
-    border_strong="rgba(214, 173, 85, 0.4)",
-    hover="rgba(197, 31, 53, 0.14)",
-    pressed="rgba(197, 31, 53, 0.24)",
-    accent="#D6AD55",        # royal gold
-    accent_soft="rgba(214, 173, 85, 0.16)",
-    accent_text="#0B090B",
-    danger="#C51F35",        # crimson red
+    name="redgold",
+    bg="#07060A",                 # deep near-black (violet-black)
+    surface="#121016",            # graphite panel
+    surface_alt="#0C0A10",        # recessed / secondary background
+    sidebar_bg="#0A0810",         # nav rail
+    text="#F4EEE7",               # warm white
+    text_secondary="#9C929C",     # muted grey
+    text_tertiary="#6B6370",      # faint
+    border="rgba(255, 255, 255, 0.07)",
+    border_strong="rgba(214, 173, 85, 0.28)",
+    hover="rgba(255, 255, 255, 0.05)",
+    pressed="rgba(255, 255, 255, 0.09)",
+    accent="#D6AD55",             # metallic gold (premium highlight)
+    accent_soft="rgba(214, 173, 85, 0.14)",
+    accent_text="#0A0709",
+    danger="#C51F35",             # blood crimson
     success="#3FB950",
-    warning="#F1D58A",
-    shadow="rgba(0, 0, 0, 0.6)",
-    scrollbar="rgba(214, 173, 85, 0.4)",
-    scrollbar_hover="rgba(214, 173, 85, 0.65)",
+    warning="#E0A458",
+    shadow="rgba(0, 0, 0, 0.62)",
+    scrollbar="rgba(214, 173, 85, 0.30)",
+    scrollbar_hover="rgba(214, 173, 85, 0.55)",
     radius_card=14,
-    radius_control=10,
+    radius_control=9,
     font_family="Segoe UI",
     base_size=13,
+    # extended palette
+    surface_elevated="#1A151F",                    # raised card
+    surface_glass="rgba(18, 15, 22, 0.72)",        # translucent panel
+    gold="#D6AD55",
+    gold_soft="rgba(214, 173, 85, 0.14)",
+    crimson="#C51F35",
+    crimson_soft="rgba(197, 31, 53, 0.16)",
+    crimson_strong="#E2384F",
+    text_on_accent="#FFF6F7",
+    hairline="rgba(255, 255, 255, 0.05)",
+    glow_crimson="rgba(197, 31, 53, 0.35)",
 )
-# REALM Crimson accents
+
 PALETTES["redgold"] = REDGOLD_TOKENS
-# alias name
 PALETTES["crimson_gold"] = REDGOLD_TOKENS

@@ -19,16 +19,17 @@ from __future__ import annotations
 from pathlib import Path
 
 from PySide6.QtCore import QPointF, QRectF, Qt, QUrl
-from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPixmap
+from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPixmap, QRadialGradient
 from PySide6.QtWidgets import QGraphicsBlurEffect, QGraphicsPixmapItem, QGraphicsScene
 
 from core.config import assets_dir, project_root
 
-# REALM palette
-_BG = "#0B090B"
-_SECONDARY = "#141014"
+# REALM cinematic palette
+_BG = "#07060A"
+_SECONDARY = "#0C0A10"
+_SURFACE = "#121016"
 _CRIMSON = "#C51F35"
-_DEEP_CRIMSON = "#781324"
+_DEEP_CRIMSON = "#5E0F1E"
 _GOLD = "#D6AD55"
 _LIGHT_GOLD = "#F1D58A"
 
@@ -36,27 +37,47 @@ _QML_DIR = Path(__file__).resolve().parent / "qml"
 
 
 def redgold_pixmap(width: int = 1920, height: int = 1080) -> QPixmap:
-    """Near-black + dark crimson ambient + subtle blurred red/gold light sources."""
+    """Near-black field with very restrained crimson / gold atmosphere.
+
+    The brief calls for black and charcoal to dominate. The bloom here is
+    deliberately faint (single-digit-to-low-teens opacity) so panels read as
+    the subject and the backdrop only adds depth — never a coloured wash.
+    """
     pix = QPixmap(width, height)
     pix.fill(QColor(_BG))
     painter = QPainter(pix)
-    # subtle dark crimson ambient gradient
-    grad = QLinearGradient(QPointF(0, 0), QPointF(width, height))
-    grad.setColorAt(0.0, QColor("#140A0C"))
-    grad.setColorAt(0.35, QColor(_SECONDARY))
-    grad.setColorAt(0.62, QColor("#1C0E12"))
-    grad.setColorAt(1.0, QColor("#0B090B"))
+    painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
+
+    # base vertical gradient: near-black → barely-there graphite → near-black
+    grad = QLinearGradient(QPointF(0, 0), QPointF(0, height))
+    grad.setColorAt(0.0, QColor("#08070B"))
+    grad.setColorAt(0.50, QColor("#0A0810"))
+    grad.setColorAt(1.0, QColor("#050408"))
     painter.fillRect(QRectF(0, 0, width, height), grad)
-    # subtle blurred red + gold light sources (soft, not bright backgrounds)
+
+    # soft radial light sources (additive) — extremely restrained
+    def _bloom(cx: float, cy: float, radius: float, color: str, opacity: float) -> None:
+        g = QRadialGradient(QPointF(cx, cy), radius)
+        c0 = QColor(color)
+        c0.setAlphaF(opacity)
+        c1 = QColor(color)
+        c1.setAlphaF(0.0)
+        g.setColorAt(0.0, c0)
+        g.setColorAt(1.0, c1)
+        painter.fillRect(QRectF(0, 0, width, height), g)
+
     painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Screen)
-    painter.setOpacity(0.22)
-    painter.fillRect(QRectF(width * 0.58, height * 0.06, width * 0.5, height * 0.5), QColor(_CRIMSON))
-    painter.setOpacity(0.16)
-    painter.fillRect(QRectF(width * 0.5, height * 0.55, width * 0.55, height * 0.5), QColor(_GOLD))
-    painter.setOpacity(0.18)
-    painter.fillRect(QRectF(0, height * 0.45, width * 0.4, height * 0.6), QColor(_DEEP_CRIMSON))
-    painter.setOpacity(0.10)
-    painter.fillRect(QRectF(width * 0.2, 0, width * 0.3, height * 0.35), QColor(_LIGHT_GOLD))
+    _bloom(width * 0.86, height * 0.10, width * 0.46, _CRIMSON, 0.11)
+    _bloom(width * 0.08, height * 0.90, width * 0.42, _DEEP_CRIMSON, 0.12)
+    _bloom(width * 0.92, height * 0.94, width * 0.30, _GOLD, 0.05)
+    _bloom(width * 0.12, height * 0.08, width * 0.26, _LIGHT_GOLD, 0.03)
+
+    # strong vignette: focus the centre, deepen every edge toward black
+    painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceOver)
+    vg = QRadialGradient(QPointF(width * 0.5, height * 0.45), width * 0.78)
+    vg.setColorAt(0.30, QColor(0, 0, 0, 0))
+    vg.setColorAt(1.0, QColor(0, 0, 0, 205))
+    painter.fillRect(QRectF(0, 0, width, height), vg)
     painter.end()
     return pix
 
@@ -82,10 +103,13 @@ def blurred_redgold(width: int = 1920, height: int = 1080, radius: int = 64) -> 
     return blur_pixmap(redgold_pixmap(width, height), radius)
 
 
+# Bump when the artwork changes so stale cached PNGs are not reused.
+_BG_VERSION = 2
+
+
 def ensure_redgold_background() -> Path:
-    """Generate + cache `assets/background_redgold.png`. Returns path."""
-    dest = assets_dir() / "background_redgold.png"
-    # regenerate if missing; cheap one-time
+    """Generate + cache the blurred backdrop for the current artwork version."""
+    dest = assets_dir() / f"background_redgold_v{_BG_VERSION}.png"
     if not dest.exists():
         pix = blurred_redgold()
         dest.parent.mkdir(parents=True, exist_ok=True)

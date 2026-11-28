@@ -134,9 +134,13 @@ class TasksPage(RealmPage):
         tasks = self.service.repo.by_column(column)
         if query:
             tasks = [t for t in tasks if query in t.title.lower() or query in t.description.lower()]
+        if not tasks:
+            hint = QLabel("No tasks here yet.")
+            hint.setObjectName("Tiny")
+            lay.addWidget(hint)
         for t in tasks:
             lay.addWidget(self._task_card(t, in_kanban=True, column=column))
-        add = QPushButton(); add.setObjectName("GhostButton"); add.clicked.connect(lambda _c=False, c=column: self.add_task(column=c)); lay.addWidget(add)
+        add = QPushButton("+ Add task"); add.setObjectName("GhostButton"); add.clicked.connect(lambda _c=False, c=column: self.add_task(column=c)); lay.addWidget(add)
         lay.addStretch(1)
         return col_widget
 

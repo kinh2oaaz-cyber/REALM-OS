@@ -11,8 +11,10 @@ from dataclasses import replace
 from pathlib import Path
 
 from PySide6.QtCore import QObject, Qt, Signal
+from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication
 
+from core.config import assets_dir
 from core.logging_setup import get_logger
 from core.settings import Settings
 
@@ -73,21 +75,44 @@ def build_qss(
     if template is None:
         template = _QSS_PATH.read_text(encoding="utf-8")
 
+    # Extended "REALM Cinematic" tokens fall back gracefully for light/dark.
+    surface_elevated = eff.surface_elevated or eff.surface
+    surface_glass = eff.surface_glass or eff.surface
+    gold = eff.gold or eff.accent
+    gold_soft = eff.gold_soft or eff.accent_soft
+    crimson = eff.crimson or eff.danger
+    crimson_soft = eff.crimson_soft or eff.accent_soft
+    crimson_strong = eff.crimson_strong or eff.danger
+    text_on_accent = eff.text_on_accent or eff.accent_text
+    hairline = eff.hairline or eff.border
+    glow_crimson = eff.glow_crimson or "rgba(0, 0, 0, 0.35)"
+
     replacements = {
+        "@assets": assets_dir().as_posix(),
         "@bg": eff.bg,
         "@surface": eff.surface,
         "@surface_alt": eff.surface_alt,
+        "@surface_elevated": surface_elevated,
+        "@surface_glass": surface_glass,
         "@sidebar_bg": eff.sidebar_bg,
         "@text_secondary": eff.text_secondary,
         "@text_tertiary": eff.text_tertiary,
         "@text": eff.text,
         "@border_strong": eff.border_strong,
         "@border": eff.border,
+        "@hairline": hairline,
         "@hover": eff.hover,
         "@pressed": eff.pressed,
         "@accent_soft": eff.accent_soft,
         "@accent_text": eff.accent_text,
         "@accent": eff.accent,
+        "@gold": gold,
+        "@gold_soft": gold_soft,
+        "@crimson": crimson,
+        "@crimson_soft": crimson_soft,
+        "@crimson_strong": crimson_strong,
+        "@text_on_accent": text_on_accent,
+        "@glow_crimson": glow_crimson,
         "@danger": eff.danger,
         "@success": eff.success,
         "@warning": eff.warning,
@@ -178,6 +203,7 @@ class ThemeManager(QObject):
             qss += _redgold_extra_qss()
         try:
             self._app.setStyle("Fusion")
+            _apply_palette(self._app, self.tokens())
             self._app.setStyleSheet(qss)
         except Exception:  # noqa: BLE001
             _log.exception("Failed to apply theme")
@@ -213,33 +239,55 @@ class ThemeManager(QObject):
         self.set_mode(new)
         return new
 
+def _apply_palette(app: QApplication, tokens: ThemeTokens) -> None:
+    """Give native (Fusion-drawn) subcontrols a palette that matches the theme.
+
+    Combo/spin arrows, menus and dialogs are partly drawn by the style rather
+    than QSS. With the stock light palette their arrows are dark-on-dark, so
+    the arrow effectively disappears. A theme-derived palette fixes that and
+    keeps native dialogs consistent with the app.
+    """
+    pal = QPalette()
+    pal.setColor(QPalette.ColorRole.Window, QColor(tokens.bg))
+    pal.setColor(QPalette.ColorRole.WindowText, QColor(tokens.text))
+    pal.setColor(QPalette.ColorRole.Base, QColor(tokens.surface_alt))
+    pal.setColor(QPalette.ColorRole.AlternateBase, QColor(tokens.surface))
+    pal.setColor(QPalette.ColorRole.Text, QColor(tokens.text))
+    pal.setColor(QPalette.ColorRole.Button, QColor(tokens.surface))
+    pal.setColor(QPalette.ColorRole.ButtonText, QColor(tokens.text_secondary))
+    pal.setColor(QPalette.ColorRole.BrightText, QColor(tokens.text))
+    pal.setColor(QPalette.ColorRole.Highlight, QColor(tokens.crimson or tokens.danger))
+    pal.setColor(
+        QPalette.ColorRole.HighlightedText,
+        QColor(tokens.text_on_accent or tokens.accent_text),
+    )
+    pal.setColor(
+        QPalette.ColorRole.ToolTipBase,
+        QColor(tokens.surface_elevated or tokens.surface),
+    )
+    pal.setColor(QPalette.ColorRole.ToolTipText, QColor(tokens.text))
+    pal.setColor(QPalette.ColorRole.PlaceholderText, QColor(tokens.text_tertiary))
+    pal.setColor(QPalette.ColorRole.Link, QColor(tokens.accent))
+    app.setPalette(pal)
+
+
 def _redgold_extra_qss() -> str:
-    """Frosted-glass Crimson x Royal Gold overrides; appended in redgold mode."""
+    """Atmospheric background image for the flagship redgold theme.
+
+    All widget styling now lives in ``base.qss`` so every module shares one
+    design language. This only paints the blurred atmospheric backdrop on the
+    root container (pages/scroll areas are transparent so it shows through).
+    """
     try:
         from ui.background import ensure_redgold_background
 
         bg_path = ensure_redgold_background().as_posix()
     except Exception:  # noqa: BLE001
         bg_path = ""
-    bg_rule = (
-        f'QWidget#RootBackground {{ background-image: url("{bg_path}"); '
-        'background-position: center; background-repeat: no-repeat; }'
-        if bg_path
-        else ""
-    )
+    if not bg_path:
+        return ""
     return (
-        "\n/* ---- REALM crimson x gold frosted glass ---- */\n"
-        "QWidget { background: transparent; }\n"
-        "QMainWindow { background: transparent; }\n"
-        + bg_rule
-        + "\nQFrame#Card { background: rgba(28, 21, 25, 0.72); border: 1px solid rgba(201, 168, 99, 0.12); border-radius: 14px; }\n"
-        "QWidget#Sidebar { background: rgba(20, 16, 20, 0.85); border-right: 1px solid rgba(201, 168, 99, 0.12); }\n"
-        "QWidget#TopBar { background: rgba(20, 16, 20, 0.80); border-bottom: 1px solid rgba(201, 168, 99, 0.12); }\n"
-        "QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QSpinBox, QDoubleSpinBox, QDateEdit, QDateTimeEdit { background: rgba(20, 16, 20, 0.72); border: 1px solid rgba(201, 168, 99, 0.25); }\n"
-        "QPushButton { background: rgba(28, 21, 25, 0.72); border: 1px solid rgba(201, 168, 99, 0.22); }\n"
-        "QPushButton#PrimaryButton { background: #C9A863; color: #0B090B; border: none; }\n"
-        "QPushButton#PrimaryButton:hover { background: #F1D58A; color: #0B090B; border: none; }\n"
-        "QPushButton#NavButton:checked { background: rgba(168, 36, 53, 0.18); color: #F1D58A; border-left: 3px solid #C9A863; font-weight: 600; }\n"
-        "QListWidget { background: transparent; }\n"
-        "QScrollArea { background: transparent; }\n"
+        "\n/* ---- REALM cinematic atmospheric backdrop ---- */\n"
+        f'QWidget#RootBackground {{ background-image: url("{bg_path}"); '
+        'background-position: center; background-repeat: no-repeat; }}\n'
     )

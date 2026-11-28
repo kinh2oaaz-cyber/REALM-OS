@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ui.components.cards import EmptyState
 from ui.components.page import RealmPage
 from ui.icons import icon as _icon
 
@@ -87,8 +88,16 @@ class GamingPage(RealmPage):
         if query:
             games = [g for g in games if query in g.name.lower() or query in g.category.lower()]
         if not games:
-            empty = QLabel("No games. Add a game or detect installed games."); empty.setObjectName("Muted")
-            self.grid_layout.addWidget(empty); self.grid_layout.addStretch(1); return
+            empty = EmptyState(
+                _icon("device-gamepad-2", color="#D6AD55", size=42),
+                "Your library is empty",
+                "Add a game manually or let REALM OS detect titles already installed on this PC.",
+            )
+            add = QPushButton("Add game"); add.setObjectName("PrimaryButton"); add.clicked.connect(self.add_game)
+            detect = QPushButton("Detect installed"); detect.clicked.connect(self.detect_installed)
+            empty.add_action(add); empty.add_action(detect)
+            self.grid_layout.addWidget(empty)
+            self.grid_layout.addStretch(1); return
         for game in games:
             self.grid_layout.addWidget(self._game_card(game))
         self.grid_layout.addStretch(1)

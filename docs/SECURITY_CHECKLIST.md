@@ -25,7 +25,7 @@ config, `REALM OS LOGO.*`.
 ## Not committed
 secrets, `.env`, `*.db`, `*.log`, `logs/`, `__pycache__`, `.venv`,
 `dist/`, `build/`, `*.key`, `*.pem`, generated `_screenshot`,
-`background_redgold.png` (regenerated at runtime).
+`background_redgold_v*.png` (regenerated at runtime).
 
 ## Push safely
 ```powershell

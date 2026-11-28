@@ -40,6 +40,7 @@ class MainWindow(QMainWindow):
 
         central = QWidget()
         central.setObjectName("RootBackground")
+        central.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setCentralWidget(central)
         root = QHBoxLayout(central)
         root.setContentsMargins(0, 0, 0, 0)
@@ -52,6 +53,7 @@ class MainWindow(QMainWindow):
 
         # Right column: top bar + workspace
         right = QWidget()
+        right.setObjectName("WorkspaceColumn")
         right_layout = QVBoxLayout(right)
         right_layout.setContentsMargins(0, 0, 0, 0)
         right_layout.setSpacing(0)

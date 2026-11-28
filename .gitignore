@@ -42,7 +42,7 @@ qtcache/
 
 # ---- generated screenshots / caches ----
 docs/_screenshot_redgold.png
-assets/background_redgold.png
+assets/background_redgold*.png
 
 # ---- IDE ----
 .vscode/

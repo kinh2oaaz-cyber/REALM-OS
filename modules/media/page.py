@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from PySide6.QtCore import Qt, QUrl
+from PySide6.QtGui import QColor
 from ui.icons import icon as _icon
 from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
@@ -102,7 +103,18 @@ class MediaPage(RealmPage):
     def refresh_library(self) -> None:
         query = self.search.text().strip() or None
         self.library_list.clear()
-        for t in self.service.library(query):
+        tracks = self.service.library(query)
+        if not tracks:
+            hint = QListWidgetItem(
+                "Your library is empty.\nAdd a folder or open a file to start listening."
+                if not query
+                else "No tracks match this search."
+            )
+            hint.setFlags(Qt.ItemFlag.NoItemFlags)
+            hint.setForeground(QColor("#6B6370"))
+            self.library_list.addItem(hint)
+            return
+        for t in tracks:
             icon = ""
             item = QListWidgetItem(f"{icon} {t.title}" + (f" — {t.artist}" if t.artist else ""))
             item.setData(Qt.ItemDataRole.UserRole, t.path); item.setToolTip(t.path); self.library_list.addItem(item)

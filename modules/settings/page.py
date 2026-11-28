@@ -88,7 +88,7 @@ class SettingsPage(RealmPage):
             btn.clicked.connect(lambda _c=False, h=hex_color: self._set_accent(h)); swatches.addWidget(btn)
         swatches.addStretch(1)
         custom = QPushButton("Custom…"); custom.clicked.connect(self._pick_accent); swatches.addWidget(custom); card.add_layout(swatches)
-        self.accent_preview = QLabel(); self.accent_preview.setFixedHeight(10); self.accent_preview.setStyleSheet(f"background:{theme.accent()}; border-radius:5px;"); card.add_widget(self.accent_preview)
+        self.accent_preview = QLabel(); self.accent_preview.setFixedHeight(10); self.accent_preview.setMaximumWidth(240); self.accent_preview.setStyleSheet(f"background:{theme.accent()}; border-radius:5px;"); card.add_widget(self.accent_preview)
 
         font_row = QHBoxLayout(); font_row.addWidget(QLabel("Font")); self.font_combo = QComboBox(); self.font_combo.addItems(_FONTS); self.font_combo.setEditable(True)
         self.font_combo.setCurrentText(theme.font_family()); self.font_combo.currentTextChanged.connect(theme.set_font_family); font_row.addWidget(self.font_combo, 1); card.add_layout(font_row)

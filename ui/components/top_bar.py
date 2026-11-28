@@ -1,4 +1,4 @@
-"""Top bar: global search, clock, notifications, quick actions, preferences."""
+"""Top bar: global search, clock, quick actions, notifications, preferences."""
 
 from __future__ import annotations
 
@@ -6,12 +6,9 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import Qt, QTimer, Signal
-from PySide6.QtWidgets import (
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QWidget,
-)
+from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QWidget
+
+from ui.icons import icon as _icon
 
 from .notifications_panel import NotificationsPanel
 from .quick_actions import build_quick_actions_menu
@@ -19,6 +16,9 @@ from .search_box import SearchBox
 
 if TYPE_CHECKING:
     from core.context import AppContext
+
+_ICON = "#B9AEB9"
+_ICON_HOVER = "#F4EEE7"
 
 
 class TopBar(QWidget):
@@ -29,11 +29,12 @@ class TopBar(QWidget):
         super().__init__(parent)
         self.context = context
         self.setObjectName("TopBar")
-        self.setFixedHeight(60)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setFixedHeight(64)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(16, 10, 16, 10)
-        layout.setSpacing(12)
+        layout.setContentsMargins(24, 12, 20, 12)
+        layout.setSpacing(10)
 
         self.search = SearchBox("Search apps, notes, tasks, events…")
         self.search.search_requested.connect(self.search_requested.emit)
@@ -44,62 +45,52 @@ class TopBar(QWidget):
         self.clock.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         layout.addWidget(self.clock)
 
-        # Quick actions
-        self.quick_button = QPushButton()
-        from ui.icons import icon as _ic
-        self.quick_button.setIcon(_ic("bolt", size=18))
-        self.quick_button.setObjectName("IconButton")
-        self.quick_button.setToolTip("Quick actions")
-        self.quick_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        layout.addSpacing(4)
+
+        self.quick_button = self._icon_button("bolt", "Quick actions")
         self._quick_menu = build_quick_actions_menu(context, self)
         self.quick_button.clicked.connect(self._show_quick_actions)
         layout.addWidget(self.quick_button)
 
-        # Notifications
-        self.notify_button = QPushButton()
-        self.notify_button.setIcon(_ic("bell", size=18))
-        self.notify_button.setObjectName("IconButton")
-        self.notify_button.setToolTip("Notifications")
-        self.notify_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.notify_button = self._icon_button("bell", "Notifications")
         self.notify_button.clicked.connect(self._toggle_notifications)
         self._notify_badge = QLabel(self.notify_button)
         self._notify_badge.setStyleSheet(
-            "background:#FF3B30;color:white;border-radius:8px;font-size:9px;padding:1px 5px;"
+            "background:#C51F35;color:#FFF6F7;border-radius:8px;font-size:9px;"
+            "font-weight:700;padding:1px 5px;"
         )
         self._notify_badge.hide()
         layout.addWidget(self.notify_button)
 
-        # Theme toggle (also a quick action; convenient in top bar)
-        self.theme_button = QPushButton()
-        self.theme_button.setIcon(_ic("moon", size=18))
-        self.theme_button.setObjectName("IconButton")
-        self.theme_button.setToolTip("Toggle dark / light")
-        self.theme_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.theme_button = self._icon_button("moon", "Toggle dark / light")
         self.theme_button.clicked.connect(self._toggle_theme)
         layout.addWidget(self.theme_button)
 
-        # Preferences / settings
-        self.prefs_button = QPushButton()
-        self.prefs_button.setIcon(_ic("settings", size=18))
-        self.prefs_button.setObjectName("IconButton")
-        self.prefs_button.setToolTip("Settings & preferences")
-        self.prefs_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.prefs_button = self._icon_button("settings", "Settings & preferences")
         self.prefs_button.clicked.connect(self.open_preferences.emit)
         layout.addWidget(self.prefs_button)
 
         self._notifications = NotificationsPanel(context, self)
 
-        # clock
         self._timer = QTimer(self)
         self._timer.setInterval(1000)
         self._timer.timeout.connect(self._update_clock)
         self._timer.start()
         self._update_clock()
         self._update_badge()
+        self._update_theme_icon()
 
         context.event_bus.subscribe("notification.added", lambda _p: self._update_badge())
         context.event_bus.subscribe("notification.read", lambda _p: self._update_badge())
         context.theme.theme_changed.connect(lambda _t: self._update_theme_icon())
+
+    def _icon_button(self, name: str, tooltip: str) -> QPushButton:
+        btn = QPushButton()
+        btn.setIcon(_icon(name, color=_ICON, size=18))
+        btn.setObjectName("IconButton")
+        btn.setToolTip(tooltip)
+        btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        return btn
 
     # -- actions --------------------------------------------------------
     def _show_quick_actions(self) -> None:
@@ -137,6 +128,5 @@ class TopBar(QWidget):
             self._notify_badge.hide()
 
     def _update_theme_icon(self) -> None:
-        dark = self.context.theme.effective_theme() == "dark"
-        from ui.icons import icon as _ic2
-        self.theme_button.setIcon(_ic2("sun" if dark else "moon", size=18))
+        dark = self.context.theme.effective_theme() in ("dark", "redgold")
+        self.theme_button.setIcon(_icon("sun" if dark else "moon", color=_ICON, size=18))

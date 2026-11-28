@@ -7,25 +7,31 @@ assets.** Preserves all working logic + SQLite + 21 apps. No rewrite.
 ## Palette (centralized `ui/themes/tokens.py::REDGOLD_TOKENS`, `redgold` default)
 | role | value |
 |---|---|
-| Background | `#0B090B` |
-| Secondary | `#141014` |
-| Surface | `#1C1519` |
-| Primary red | `#C51F35` |
-| Deep crimson | `#781324` |
+| Background | `#07060A` |
+| Surface | `#121016` |
+| Recessed | `#0C0A10` |
+| Elevated | `#1A151F` |
+| Sidebar | `#0A0810` |
+| Primary crimson | `#C51F35` |
+| Crimson strong | `#E2384F` |
 | Royal gold | `#D6AD55` |
-| Light gold | `#F1D58A` |
-| Text | `#F5F0E9` |
-| Secondary text | `#A69A9A` |
-| Borders | `rgba(214,173,85,0.18)` |
+| Text | `#F4EEE7` |
+| Secondary text | `#9C929C` |
+| Tertiary text | `#6B6370` |
+| Hairline | `rgba(255,255,255,0.05)` |
+| Gold border | `rgba(214,173,85,0.28)` |
 
-Gold = premium highlight (not overused); red = identity (not bright bg).
+Black/charcoal dominate. Gold = premium highlight and selected detail
+(not overused); crimson = action, active state and importance (never a
+bright background wash). See `docs/DESIGN_SYSTEM.md`.
 
 ## Blur / glass (real, not fake transparency)
 Qt QSS has no `backdrop-filter`. **Three real supported paths:**
-1. **QtWidgets shell**: pre-blurred `assets/background_redgold.png`
-   (`QGraphicsBlurEffect`, `ui/background.py::ensure_redgold_background`)
-   + `QWidget#RootBackground` + translucent `rgba` panels + appended
-   `_redgold_extra_qss`.
+1. **QtWidgets shell**: pre-blurred, versioned backdrop
+   (`assets/background_redgold_v2.png`, `QGraphicsBlurEffect`,
+   `ui/background.py::ensure_redgold_background`) + `QWidget#RootBackground`.
+   The field is near-black with restrained crimson/gold bloom and a strong
+   vignette; opaque sidebar/top bar and graphite cards sit above it.
 2. **`QGraphicsBlurEffect`** + **`QGraphicsDropShadowEffect`** on cards.
 3. **Qt Quick / QML `QtQuick.Effects.FastBlur`** in reusable
    **`ui/qml/BlurredBackground.qml`**; **`QmlBlurredBackground(QQuickWidget)`**

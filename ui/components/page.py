@@ -23,9 +23,12 @@ class RealmPage(QWidget):
         super().__init__(parent)
         self.context = context
         self.setObjectName("RealmPage")
+        # Dynamic property lets the global QSS make pages transparent so the
+        # atmospheric backdrop shows through (see ui/themes/base.qss).
+        self.setProperty("realmPage", True)
         self._root = QVBoxLayout(self)
-        self._root.setContentsMargins(28, 24, 28, 24)
-        self._root.setSpacing(16)
+        self._root.setContentsMargins(32, 26, 32, 26)
+        self._root.setSpacing(18)
         self.build_ui()
 
     # -- API ------------------------------------------------------------
